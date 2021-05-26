@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         age: {
-            type: Sequelize.INT
+            type: Sequelize.INTEGER
         },
         gender: {
             type: Sequelize.STRING
