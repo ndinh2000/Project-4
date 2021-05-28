@@ -4,7 +4,7 @@ import PetDataService from "../services/pet.service";
 export default class Pet extends Component {
     constructor(props) {
         super(props);
-        this.onChangePetID = this.onChangePetID.bind(this);
+        // this.onChangePetID = this.onChangePetID.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeAge = this.onChangeAge.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
@@ -33,6 +33,7 @@ export default class Pet extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         this.getPet(this.props.match.params.pet_id);
     }
 
@@ -105,12 +106,15 @@ export default class Pet extends Component {
     }
 
     getPet(pet_id) {
+        console.log(`gettPet(${pet_id})`)
+        console.log(pet_id)
         PetDataService.get(pet_id)
             .then(response => {
                 this.setState({
                     currentPet: response.data
                 });
                 console.log(response.data);
+                console.log(`just getPet(${pet_id})`)
             })
             .catch(e => {
                 console.log(e);

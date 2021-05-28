@@ -6,6 +6,8 @@ class PetDataService {
     }
 
     get(pet_id) {
+        console.log(`get(${pet_id}) from PetDataService`)
+        console.log(http)
         return http.get(`/pets/${pet_id}`);
     }
 

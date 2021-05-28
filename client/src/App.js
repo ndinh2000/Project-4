@@ -33,7 +33,7 @@ class App extends Component {
             <Switch>
               <Route exact path={["/", "/pets"]} component={PetsList} />
               <Route exact path="/add" component={AddPet} />
-              <Route path="/pets/:id" component={Pet} />
+              <Route path="/pets/:pet_id" component={Pet} />
             </Switch>
           </div>
         </div>

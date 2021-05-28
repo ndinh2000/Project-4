@@ -90,7 +90,10 @@ export default class PetsList extends Component {
     }
 
     render() {
-        const { searchName, pets, currentPet, currentIndex } = this.state;
+        const { pets, currentPet, currentIndex, searchName } = this.state;
+
+        console.log(currentPet)
+        console.log(pets)
 
         return (
             <div className="list row">
