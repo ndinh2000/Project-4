@@ -63,21 +63,11 @@ exports.findOne = (req, res) => {
     console.log("findOne" + pet_id)
     // console.log("findOne")
 
-    Pet.findOne({
-        where: {
-            pet_id: pet_id
-        },
-    }).then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error retrieving Pet with pet_id=" + pet_id
-            });
-        });
-
-    // Pet.findByPk(pet_id)
-    //     .then(data => {
+    // Pet.findOne({
+    //     where: {
+    //         pet_id: pet_id
+    //     },
+    // }).then(data => {
     //         res.send(data);
     //     })
     //     .catch(err => {
@@ -85,6 +75,16 @@ exports.findOne = (req, res) => {
     //             message: "Error retrieving Pet with pet_id=" + pet_id
     //         });
     //     });
+
+    Pet.findByPk(pet_id)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error retrieving Pet with pet_id=" + pet_id
+            });
+        });
 };
 
 // Update a Pet by the id in the request

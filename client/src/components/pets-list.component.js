@@ -106,6 +106,31 @@ export default class PetsList extends Component {
                             value={searchName}
                             onChange={this.onChangeSearchName}
                         />
+                        {/* <div className="form-group"> */}
+                            {/* <label htmlFor="gender">Gender</label> */}
+                            <select
+                                name="gender"
+                                id="gender"
+                                required
+                                // value={this.state.gender}
+                                // onChange={this.onChangeGender}
+                            >
+                                <option selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <select
+                                name="type"
+                                id="type"
+                                required
+                                // value={this.state.gender}
+                                // onChange={this.onChangeGender}
+                            >
+                                <option selected>Type</option>
+                                <option value="Male">Cat</option>
+                                <option value="Female">Dog</option>
+                            </select>
+                        {/* </div> */}
                         <div className="input-group-append">
                             <button
                                 className="btn btn-outline-secondary"
