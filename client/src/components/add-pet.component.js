@@ -11,6 +11,7 @@ export default class AddPet extends Component {
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
+        this.onChangePetType = this.onChangePetType.bind(this);
 
         this.savePet = this.savePet.bind(this);
         this.newPet = this.newPet.bind(this);
@@ -19,10 +20,11 @@ export default class AddPet extends Component {
             pet_id: "",
             name: "",
             age: 0,
-            gender: "",
+            gender: "Male",
             price: 0.0,
             message: "",
             profile_picture: "",
+            pet_type:"Cat",
             published: false,
 
             submitted: false
@@ -71,6 +73,13 @@ export default class AddPet extends Component {
         });
     }
 
+    onChangePetType(e)
+    {
+        this.setState({
+            pet_type: e.target.value
+        });
+    }
+
     savePet() {
         var data = {
             pet_id: this.state.pet_id,
@@ -80,6 +89,7 @@ export default class AddPet extends Component {
             price: this.state.price,
             message: this.state.message,
             profile_picture: this.state.profile_picture,
+            pet_type:this.state.pet_type
         };
 
         PetDataService.create(data)
@@ -92,6 +102,7 @@ export default class AddPet extends Component {
                     price: response.data.price,
                     message: response.data.message,
                     profile_picture: response.data.profile_picture,
+                    pet_type:response.data.pet_type,
                     published: response.data.published,
 
                     submitted: true
@@ -112,6 +123,7 @@ export default class AddPet extends Component {
             price: 0.0,
             message: "",
             profile_picture: "",
+            pet_type:"",
             published: false,
 
             submitted: false
@@ -170,7 +182,7 @@ export default class AddPet extends Component {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="gender">Gender</label>
+                            <label htmlFor="gender">Gender</label>{" "}
                             <select
                                 name="gender"
                                 id="gender"
@@ -220,6 +232,20 @@ export default class AddPet extends Component {
                                 onChange={this.onChangeProfilePicture}
                                 name="profile_picture"
                             />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="pet_type">Pet Type</label>{" "}
+                            <select
+                                name="pet_type"
+                                id="pet_type"
+                                required
+                                value={this.state.pet_type}
+                                onChange={this.onChangePetType}
+                            >
+                                <option value="Cat">Cat</option>
+                                <option value="Dog">Dog</option>
+                            </select>
                         </div>
 
                         <button onClick={this.savePet} className="btn btn-success">

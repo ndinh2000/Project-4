@@ -34,6 +34,16 @@ class PetDataService {
     findByGender(gender) {
         return http.get(`/pets?gender=${gender}`);
     }
+
+    findByPetType(pet_type)
+    {
+        return http.get(`/pets?pet_type=${pet_type}`);
+    }
+
+    findByAll(name,gender,pet_type)
+    {
+        return http.get(`/pets?name=${name}&gender=${gender}&pet_type=${pet_type}`);
+    }
 }
 
 export default new PetDataService();

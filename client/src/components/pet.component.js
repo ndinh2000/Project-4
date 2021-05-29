@@ -11,6 +11,7 @@ export default class Pet extends Component {
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
+        this.onChangePetType= this.onChangePetType.bind(this);
 
         this.getPet = this.getPet.bind(this);
         this.updatePublished = this.updatePublished.bind(this);
@@ -27,6 +28,7 @@ export default class Pet extends Component {
                 message: "",
                 profile_picture: "",
                 published: false,
+                pet_type:"",
             },
             message: ""
         };
@@ -105,6 +107,17 @@ export default class Pet extends Component {
         }));
     }
 
+    onChangePetType(e) {
+        const pet_type = e.target.value;
+
+        this.setState(prevState => ({
+            currentPet: {
+                ...prevState.currentPet,
+                pet_type: pet_type
+            }
+        }));
+    }
+
     getPet(pet_id) {
         console.log(`gettPet(${pet_id})`)
         console.log(pet_id)
@@ -130,6 +143,7 @@ export default class Pet extends Component {
             price:this.state.currentPet.price,
             message: this.state.currentPet.message,
             profile_picture: this.state.currentPet.profile_picture,
+            pet_type:this.state.currentPet.pet_type,
             published: status
         };
 
@@ -255,6 +269,18 @@ export default class Pet extends Component {
                                     value={currentPet.profile_picture}
                                     onChange={this.onChangeProfilePicture}
                                     name="profile_picture"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="pet_type">Pet Type</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="pet_type"
+                                    value={currentPet.pet_type}
+                                    onChange={this.onChangePetType}
+                                    name="pet_type"
                                 />
                             </div>
 
