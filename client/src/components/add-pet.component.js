@@ -110,6 +110,7 @@ export default class AddPet extends Component {
                 console.log(response.data);
             })
             .catch(e => {
+                //NOTE: This is throwing error
                 console.log(e);
             });
     }
@@ -184,11 +185,13 @@ export default class AddPet extends Component {
                         <div className="form-group">
                             <label htmlFor="gender">Gender</label>{" "}
                             <select
-                                name="gender"
+
                                 id="gender"
                                 required
                                 value={this.state.gender}
                                 onChange={this.onChangeGender}
+                                name="gender"
+
                             >
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
