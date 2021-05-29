@@ -12,6 +12,7 @@ class PetDataService {
     }
 
     create(data) {
+        //Issue with Post
         return http.post("/pets", data);
     }
 
@@ -31,9 +32,9 @@ class PetDataService {
         return http.get(`/pets?name=${name}`);
     }
 
-    findByGender(gender) {
-        return http.get(`/pets?gender=${gender}`);
-    }
+    // findByGender(gender) {
+    //     return http.get(`/pets?gender=${gender}`);
+    // }
 }
 
 export default new PetDataService();

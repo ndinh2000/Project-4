@@ -28,6 +28,7 @@ exports.create = (req, res) => {
 
     // Save Pet in the database
     Pet.create(pet)
+        //Error here?
         .then(data => {
             res.send(data);
         })
@@ -42,6 +43,7 @@ exports.create = (req, res) => {
 // Retrieve all Pets from the database.
 exports.findAll = (req, res) => {
     const name = req.query.name;
+
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
     Pet.findAll({ where: condition })
@@ -75,6 +77,22 @@ exports.findOne = (req, res) => {
     //             message: "Error retrieving Pet with pet_id=" + pet_id
     //         });
     //     });
+
+    Pet.findByPk(pet_id)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error retrieving Pet with pet_id=" + pet_id
+            });
+        });
+};
+
+exports.findGender = (req, res) => {
+    const pet_gender = req.params.gender;
+    console.log(req.params)
+    console.log("findGender" + pet_gender)
 
     Pet.findByPk(pet_id)
         .then(data => {
