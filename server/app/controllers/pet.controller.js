@@ -42,9 +42,59 @@ exports.create = (req, res) => {
 
 // Retrieve all Pets from the database.
 exports.findAll = (req, res) => {
+    console.log("findAll")
     const name = req.query.name;
+    const gender = req.query.gender;
+    const category = req.query.category;
+    console.log(name, gender, category)
 
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    // var condition = {
+    //     name: "",
+    //     gender: "",
+    //     category: ""
+    // }
+    // if (name)
+    //     condition.name = { [Op.like]: `%${name}%` }
+    // if (gender)
+    //     condition.gender = { [Op.like]: `%${gender}%` }
+    // if (category)
+    //     condition.category = { [Op.like]: `%${category}%` }
+
+    var condition = {
+      [Op.and]: [
+        {
+          name: name ? {
+            [Op.like]: `%${name}%`
+          } : {
+            [Op.like]: `%`
+          }
+        },
+        {
+          gender: gender ? gender : {
+            [Op.like]: `%`
+          }
+        },
+        {
+            category: category ? category : {
+                [Op.like]: `%`
+            }
+        //   category: category ? {
+        //     [Op.like]: `%${category}%`
+        //   } : {
+        //     [Op.like]: `%`
+        //   }
+        }
+      ]
+    }
+
+    console.log(condition)
+
+    // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    // var condition = {
+    //     name: { [Op.like]: `%${name}%` },
+    //     gender: { [Op.like]: `%${gender}%` },
+    //     category: { [Op.like]: `%${category}%` },
+    // };
 
     Pet.findAll({ where: condition })
         .then(data => {

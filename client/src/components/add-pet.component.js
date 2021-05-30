@@ -8,6 +8,7 @@ export default class AddPet extends Component {
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeAge = this.onChangeAge.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
+        this.onChangeCategory = this.onChangeCategory.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
@@ -19,7 +20,8 @@ export default class AddPet extends Component {
             pet_id: "",
             name: "",
             age: 0,
-            gender: "Male",
+            gender: "",
+            category: "",
             price: 0.0,
             message: "",
             profile_picture: "",
@@ -53,6 +55,12 @@ export default class AddPet extends Component {
         });
     }
 
+    onChangeCategory(e) {
+        this.setState({
+            category: e.target.value
+        });
+    }
+
     onChangePrice(e) {
         this.setState({
             price: e.target.value
@@ -77,6 +85,7 @@ export default class AddPet extends Component {
             name: this.state.name,
             age: this.state.age,
             gender: this.state.gender,
+            category: this.state.category,
             price: this.state.price,
             message: this.state.message,
             profile_picture: this.state.profile_picture,
@@ -89,6 +98,7 @@ export default class AddPet extends Component {
                     name: response.data.name,
                     age: response.data.age,
                     gender: response.data.gender,
+                    category: response.data.category,
                     price: response.data.price,
                     message: response.data.message,
                     profile_picture: response.data.profile_picture,
@@ -110,6 +120,7 @@ export default class AddPet extends Component {
             name: "",
             age: 0,
             gender: "",
+            category: "",
             price: 0.0,
             message: "",
             profile_picture: "",
@@ -183,6 +194,22 @@ export default class AddPet extends Component {
                             >
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="category">Category</label>
+                            <select
+
+                                id="category"
+                                required
+                                value={this.state.category}
+                                onChange={this.onChangeCategory}
+                                name="category"
+
+                            >
+                                <option value="Cat">Cat</option>
+                                <option value="Dog">Dog</option>
                             </select>
                         </div>
 

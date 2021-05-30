@@ -28,9 +28,17 @@ class PetDataService {
         return http.delete(`/pets`);
     }
 
-    findByName(name) {
-        return http.get(`/pets?name=${name}`);
+    // findByName(name) {
+    //     return http.get(`/pets?name=${name}`);
+    // }
+
+    findByName(pet) {
+        return http.get(`/pets?name=${pet.name}&gender=${pet.gender}&category=${pet.category}`);
     }
+
+    // findByName(pet) {
+    //     return http.get(`/pets?name=${pet.name}&gender=${pet.gender}`);
+    // }
 
     // findByGender(gender) {
     //     return http.get(`/pets?gender=${gender}`);

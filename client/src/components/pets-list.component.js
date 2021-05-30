@@ -8,6 +8,7 @@ export default class PetsList extends Component {
         super(props);
         this.onChangeSearchName = this.onChangeSearchName.bind(this);
         this.onChangeSearchGender = this.onChangeSearchGender.bind(this);
+        this.onChangeSearchCategory = this.onChangeSearchCategory.bind(this);
         this.retrievePets = this.retrievePets.bind(this);
         this.refreshList = this.refreshList.bind(this);
         this.setActivePet = this.setActivePet.bind(this);
@@ -20,7 +21,8 @@ export default class PetsList extends Component {
             currentPet: null,
             currentIndex: -1,
             searchName: "",
-            searchGender: ""
+            searchGender: "",
+            searchCategory: ""
         };
     }
 
@@ -41,6 +43,14 @@ export default class PetsList extends Component {
 
         this.setState({
             searchGender: searchGender
+        });
+    }
+
+    onChangeSearchCategory(e) {
+        const searchCategory = e.target.value;
+
+        this.setState({
+            searchCategory: searchCategory
         });
     }
 
@@ -84,12 +94,23 @@ export default class PetsList extends Component {
     }
 
     searchName() {
+        console.log("searchName")
+        console.log(this.state)
         this.setState({
             currentPet: null,
             currentIndex: -1
         });
 
-        PetDataService.findByName(this.state.searchName)
+        const newPet = {
+            name: this.state.searchName,
+            gender: this.state.searchGender,
+            category: this.state.searchCategory
+        }
+
+        console.log(newPet)
+
+        // PetDataService.findByName(this.state.searchName)
+        PetDataService.findByName(newPet)
             .then(response => {
                 this.setState({
                     pets: response.data
@@ -120,7 +141,7 @@ export default class PetsList extends Component {
     }
 
     render() {
-        const { pets, currentPet, currentIndex, searchName, searchGender } = this.state;
+        const { pets, currentPet, currentIndex, searchName, searchGender, searchCategory } = this.state;
 
         console.log(currentPet)
         console.log(pets)
@@ -136,8 +157,9 @@ export default class PetsList extends Component {
                             value={searchName}
                             onChange={this.onChangeSearchName}
                         />
-                         <div className="form-group">
-                             <label htmlFor="gender">Gender</label>
+                    {/* </div> */}
+                         {/* <div className="form-group"> */}
+                            {/* <label htmlFor="gender">Gender</label> */}
                             <select
                                 name="gender"
                                 id="gender"
@@ -145,22 +167,24 @@ export default class PetsList extends Component {
                                 value={searchGender}
                                 onChange={this.onChangeSearchGender}
                             >
-                                <option selected>Gender</option>
-                                <option value="Male">"Male"</option>
-                                <option value="Female">"Female"</option>
+                                <option value="" selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
+                         {/* </div> */}
+                         {/* <div className="form-group"> */}
                             <select
-                                name="type"
-                                id="type"
+                                name="category"
+                                id="category"
                                 required
-                                value={this.state.gender}
-                                onChange={this.onChangeGender}
+                                value={searchCategory}
+                                onChange={this.onChangeSearchCategory}
                             >
-                                <option selected>Type</option>
-                                <option value="Male">Cat</option>
-                                <option value="Female">Dog</option>
+                                <option value="" selected>Category</option>
+                                <option value="Cat">Cat</option>
+                                <option value="Dog">Dog</option>
                             </select>
-                         </div>
+                        {/* </div> */}
                         <div className="input-group-append">
                             <button
                                 className="btn btn-outline-secondary"
