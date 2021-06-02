@@ -8,10 +8,10 @@ export default class AddPet extends Component {
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeAge = this.onChangeAge.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
+        this.onChangeCategory = this.onChangeCategory.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
-        this.onChangePetType = this.onChangePetType.bind(this);
 
         this.savePet = this.savePet.bind(this);
         this.newPet = this.newPet.bind(this);
@@ -20,11 +20,11 @@ export default class AddPet extends Component {
             pet_id: "",
             name: "",
             age: 0,
-            gender: "Male",
+            gender: "",
+            category: "",
             price: 0.0,
             message: "",
             profile_picture: "",
-            pet_type:"Cat",
             published: false,
 
             submitted: false
@@ -55,6 +55,12 @@ export default class AddPet extends Component {
         });
     }
 
+    onChangeCategory(e) {
+        this.setState({
+            category: e.target.value
+        });
+    }
+
     onChangePrice(e) {
         this.setState({
             price: e.target.value
@@ -73,23 +79,16 @@ export default class AddPet extends Component {
         });
     }
 
-    onChangePetType(e)
-    {
-        this.setState({
-            pet_type: e.target.value
-        });
-    }
-
     savePet() {
         var data = {
             pet_id: this.state.pet_id,
             name: this.state.name,
             age: this.state.age,
             gender: this.state.gender,
+            category: this.state.category,
             price: this.state.price,
             message: this.state.message,
             profile_picture: this.state.profile_picture,
-            pet_type:this.state.pet_type
         };
 
         PetDataService.create(data)
@@ -99,10 +98,10 @@ export default class AddPet extends Component {
                     name: response.data.name,
                     age: response.data.age,
                     gender: response.data.gender,
+                    category: response.data.category,
                     price: response.data.price,
                     message: response.data.message,
                     profile_picture: response.data.profile_picture,
-                    pet_type:response.data.pet_type,
                     published: response.data.published,
 
                     submitted: true
@@ -121,10 +120,10 @@ export default class AddPet extends Component {
             name: "",
             age: 0,
             gender: "",
+            category: "",
             price: 0.0,
             message: "",
             profile_picture: "",
-            pet_type:"",
             published: false,
 
             submitted: false
@@ -143,7 +142,8 @@ export default class AddPet extends Component {
                     </div>
                 ) : (
                     <div>
-                        <div className="form-group">
+                        {/* <div className="form-group"> */}
+                        <form onSubmit={this.savePet} className="form-group">
                             <label htmlFor="pet_id">Pet ID</label>
                             <input
                                 type="text"
@@ -154,9 +154,11 @@ export default class AddPet extends Component {
                                 onChange={this.onChangePetID}
                                 name="pet_id"
                             />
-                        </div>
+                        {/* </div> */}
 
-                        <div className="form-group">
+                        {/* <div className="form-group"> */}
+
+                            {/* <br/> */}
                             <label htmlFor="name">Pet Name</label>
                             <input
                                 type="text"
@@ -167,9 +169,8 @@ export default class AddPet extends Component {
                                 onChange={this.onChangeName}
                                 name="name"
                             />
-                        </div>
 
-                        <div className="form-group">
+                            {/* <br/> */}
                             <label htmlFor="age">Age</label>
                             <input
                                 type="number"
@@ -180,10 +181,107 @@ export default class AddPet extends Component {
                                 onChange={this.onChangeAge}
                                 name="age"
                             />
-                        </div>
 
-                        <div className="form-group">
-                            <label htmlFor="gender">Gender</label>{" "}
+                            {/* <br/> */}
+                            <label htmlFor="gender">Gender</label>
+                            <select
+                                id="gender"
+                                required
+                                value={this.state.gender}
+                                onChange={this.onChangeGender}
+                                name="gender"
+                                className="form-control"
+                                style={{width: "80%"}}
+                            >
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+
+                            {/* <br/> */}
+                            <label htmlFor="category">Category</label>
+                            <select
+                                id="category"
+                                required
+                                value={this.state.category}
+                                onChange={this.onChangeCategory}
+                                name="category"
+                                className="form-control"
+                                style={{width: "80%"}}
+                            >
+                                <option value="Cat">Cat</option>
+                                <option value="Dog">Dog</option>
+                            </select>
+
+                            {/* <br/> */}
+                            <label htmlFor="price">Price</label>
+                            <input
+                                type="number"
+                                step= "0.01"
+                                className="form-control"
+                                id="price"
+                                required
+                                value={this.state.price}
+                                onChange={this.onChangePrice}
+                                name="price"
+                            />
+
+                            {/* <br/> */}
+                            <label htmlFor="Message">Message</label>
+                            {/* <input
+                                type="text"
+                                className="form-control"
+                                id="message"
+                                required
+                                value={this.state.message}
+                                onChange={this.onChangeMessage}
+                                name="message"
+                            /> */}
+                            <textarea
+                                // type="text"
+                                className="form-control"
+                                id="message"
+                                required
+                                value={this.state.message}
+                                onChange={this.onChangeMessage}
+                                name="message"
+                                style={{height: "100px", overflow: "auto"}}
+                            />
+
+                            {/* <br/> */}
+                            <label htmlFor="profile_picture">Profile Picture</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="profile_picture"
+                                required
+                                value={this.state.profile_picture}
+                                onChange={this.onChangeProfilePicture}
+                                name="profile_picture"
+                            />
+                            {/* <button onClick={this.savePet} className="btn btn-success"> */}
+
+                            <br/>
+                            <button type="submit" className="btn btn-success">
+                                Submit
+                            </button>
+                        </form>
+                        {/* </div> */}
+
+                        {/* <div className="form-group">
+                            <label htmlFor="age">Age</label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="age"
+                                required
+                                value={this.state.age}
+                                onChange={this.onChangeAge}
+                                name="age"
+                            />
+                        </div> */}
+
+                        {/* <div className="form-group">
+                            <label htmlFor="gender">Gender</label>
                             <select
 
                                 id="gender"
@@ -196,9 +294,25 @@ export default class AddPet extends Component {
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
-                        </div>
+                        </div> */}
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
+                            <label htmlFor="category">Category</label>
+                            <select
+
+                                id="category"
+                                required
+                                value={this.state.category}
+                                onChange={this.onChangeCategory}
+                                name="category"
+
+                            >
+                                <option value="Cat">Cat</option>
+                                <option value="Dog">Dog</option>
+                            </select>
+                        </div> */}
+
+                        {/* <div className="form-group">
                             <label htmlFor="price">Price</label>
                             <input
                                 type="number"
@@ -210,9 +324,9 @@ export default class AddPet extends Component {
                                 onChange={this.onChangePrice}
                                 name="price"
                             />
-                        </div>
+                        </div> */}
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="Message">Message</label>
                             <input
                                 type="text"
@@ -223,37 +337,24 @@ export default class AddPet extends Component {
                                 onChange={this.onChangeMessage}
                                 name="message"
                             />
-                        </div>
+                        </div> */}
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="profile_picture">Profile Picture</label>
                             <input
                                 type="text"
                                 className="form-control"
                                 id="profile_picture"
+                                required
                                 value={this.state.profile_picture}
                                 onChange={this.onChangeProfilePicture}
                                 name="profile_picture"
                             />
-                        </div>
+                        </div> */}
 
-                        <div className="form-group">
-                            <label htmlFor="pet_type">Pet Type</label>{" "}
-                            <select
-                                name="pet_type"
-                                id="pet_type"
-                                required
-                                value={this.state.pet_type}
-                                onChange={this.onChangePetType}
-                            >
-                                <option value="Cat">Cat</option>
-                                <option value="Dog">Dog</option>
-                            </select>
-                        </div>
-
-                        <button onClick={this.savePet} className="btn btn-success">
+                        {/* <button onClick={this.savePet} className="btn btn-success">
                             Submit
-                        </button>
+                        </button> */}
                     </div>
                 )}
             </div>

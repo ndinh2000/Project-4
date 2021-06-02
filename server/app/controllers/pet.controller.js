@@ -21,7 +21,6 @@ exports.create = (req, res) => {
         price:req.body.price,
         message:req.body.message,
         profile_picture:req.body.profile_picture,
-        pet_type:req.body.pet_type,
         // title: req.body.title,
         // description: req.body.description,
         published: req.body.published ? req.body.published : false
@@ -29,6 +28,7 @@ exports.create = (req, res) => {
 
     // Save Pet in the database
     Pet.create(pet)
+        //Error here?
         .then(data => {
             res.send(data);
         })
@@ -42,51 +42,62 @@ exports.create = (req, res) => {
 
 // Retrieve all Pets from the database.
 exports.findAll = (req, res) => {
+    console.log("findAll")
     const name = req.query.name;
     const gender = req.query.gender;
-    const pet_type = req.query.pet_type;
+    const category = req.query.category;
+    console.log(name, gender, category)
 
-    // var condition = name ? { name: { [Op.like]: `%${name}%` } } :null;
-    var condition = null;
-    if(name != undefined && gender != undefined && pet_type != undefined)
-    {
-        condition = name,gender,pet_type ? { name: { [Op.like]: `%${name}%`},
-                gender:{[Op.like]: `${gender}`},
-                pet_type:{[Op.like]: `${pet_type}`} }  :null;
+    // var condition = {
+    //     name: "",
+    //     gender: "",
+    //     category: ""
+    // }
+    // if (name)
+    //     condition.name = { [Op.like]: `%${name}%` }
+    // if (gender)
+    //     condition.gender = { [Op.like]: `%${gender}%` }
+    // if (category)
+    //     condition.category = { [Op.like]: `%${category}%` }
+
+    var condition = {
+      [Op.and]: [
+        {
+          name: name ? {
+            [Op.like]: `%${name}%`
+          } : {
+            [Op.like]: `%`
+          }
+        },
+        {
+          gender: gender ? gender : {
+            [Op.like]: `%`
+          }
+        },
+        {
+            category: category ? category : {
+                [Op.like]: `%`
+            }
+        //   category: category ? {
+        //     [Op.like]: `%${category}%`
+        //   } : {
+        //     [Op.like]: `%`
+        //   }
+        }
+      ]
     }
-    else if(name != undefined && gender != undefined && pet_type == undefined)
-    {
-        condition = name,gender ? { name: { [Op.like]: `%${name}%`},
-            gender:{[Op.like]: `${gender}`} }  :null;
-    }
-    else if(name != undefined && gender == undefined && pet_type != undefined)
-    {
-        condition = name,pet_type ? { name: { [Op.like]: `%${name}%`},
-            pet_type:{[Op.like]: `${pet_type}`} }  :null;
-    }
-    else if(name == undefined && gender != undefined && pet_type != undefined)
-    {
-        condition = gender,pet_type ? { gender:{[Op.like]: `${gender}`},
-            pet_type:{[Op.like]: `${pet_type}`} }  :null;
-    }
-    else if(name != undefined && gender == undefined && pet_type == undefined)
-    {
-        condition = name? { name: { [Op.like]: `%${name}%`}}:null;
-    }
-    else if(name == undefined && gender != undefined && pet_type == undefined)
-    {
-        condition = gender? { gender:{[Op.like]: `${gender}`} }  :null;
-    }
-    else if(name == undefined && gender == undefined && pet_type != undefined)
-    {
-        condition = pet_type ? { pet_type:{[Op.like]: `${pet_type}`} }  :null;
-    }
+
+    console.log(condition)
+
+    // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    // var condition = {
+    //     name: { [Op.like]: `%${name}%` },
+    //     gender: { [Op.like]: `%${gender}%` },
+    //     category: { [Op.like]: `%${category}%` },
+    // };
 
     Pet.findAll({ where: condition })
         .then(data => {
-            console.log("name: "+name)
-            console.log("gender: "+gender)
-            console.log("pet_type: "+pet_type)
             res.send(data);
         })
         .catch(err => {
@@ -116,6 +127,22 @@ exports.findOne = (req, res) => {
     //             message: "Error retrieving Pet with pet_id=" + pet_id
     //         });
     //     });
+
+    Pet.findByPk(pet_id)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error retrieving Pet with pet_id=" + pet_id
+            });
+        });
+};
+
+exports.findGender = (req, res) => {
+    const pet_gender = req.params.gender;
+    console.log(req.params)
+    console.log("findGender" + pet_gender)
 
     Pet.findByPk(pet_id)
         .then(data => {

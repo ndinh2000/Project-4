@@ -8,14 +8,13 @@ export default class PetsList extends Component {
         super(props);
         this.onChangeSearchName = this.onChangeSearchName.bind(this);
         this.onChangeSearchGender = this.onChangeSearchGender.bind(this);
-        this.onChangeSearchPetType = this.onChangeSearchPetType.bind(this);
-
+        this.onChangeSearchCategory = this.onChangeSearchCategory.bind(this);
         this.retrievePets = this.retrievePets.bind(this);
         this.refreshList = this.refreshList.bind(this);
         this.setActivePet = this.setActivePet.bind(this);
         this.removeAllPets = this.removeAllPets.bind(this);
         this.searchName = this.searchName.bind(this);
-        // this.searchGender = this.searchGender.bind(this)
+        this.searchGender = this.searchGender.bind(this)
 
         this.state = {
             pets: [],
@@ -23,7 +22,7 @@ export default class PetsList extends Component {
             currentIndex: -1,
             searchName: "",
             searchGender: "",
-            searchPetType:"",
+            searchCategory: ""
         };
     }
 
@@ -46,11 +45,12 @@ export default class PetsList extends Component {
             searchGender: searchGender
         });
     }
-    onChangeSearchPetType(e) {
-        const searchPetType= e.target.value;
+
+    onChangeSearchCategory(e) {
+        const searchCategory = e.target.value;
 
         this.setState({
-            searchPetType: searchPetType
+            searchCategory: searchCategory
         });
     }
 
@@ -94,85 +94,57 @@ export default class PetsList extends Component {
     }
 
     searchName() {
+        console.log("searchName")
+        console.log(this.state)
         this.setState({
             currentPet: null,
             currentIndex: -1
         });
 
-        if(this.state.searchName !== "" && this.state.searchGender !== "" && this.state.searchPetType !== "") {
-            PetDataService.findByAll(this.state.searchName,this.state.searchGender,this.state.searchPetType)
-                .then(response => {
-                    this.setState({
-                        pets: response.data
-                    });
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+        const newPet = {
+            name: this.state.searchName,
+            gender: this.state.searchGender,
+            category: this.state.searchCategory
         }
-        else if(this.state.searchName !== "") {
-            PetDataService.findByName(this.state.searchName)
-                .then(response => {
-                    this.setState({
-                        pets: response.data
-                    });
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
+
+        console.log(newPet)
+
+        // PetDataService.findByName(this.state.searchName)
+        PetDataService.findByName(newPet)
+            .then(response => {
+                this.setState({
+                    pets: response.data
                 });
-        }else if(this.state.searchGender !== ""){
-            PetDataService.findByGender(this.state.searchGender)
-                .then(response => {
-                    this.setState({
-                        pets: response.data
-                    });
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        }
-        else if(this.state.searchPetType !== ""){
-            PetDataService.findByPetType(this.state.searchPetType)
-                .then(response => {
-                    this.setState({
-                        pets: response.data
-                    });
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-        }
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
     }
 
-    // searchGender() {
-    //     this.setState({
-    //         currentPet: null,
-    //         currentIndex: -1
-    //     });
-    //
-    //     PetDataService.findByGender(this.state.searchGender)
-    //         .then(response => {
-    //             this.setState({
-    //                 pets: response.data
-    //             });
-    //             console.log(response.data);
-    //         })
-    //         .catch(e => {
-    //             console.log(e);
-    //         });
-    // }
+    searchGender() {
+        this.setState({
+            currentPet: null,
+            currentIndex: -1
+        });
+
+        PetDataService.findByGender(this.state.searchGender)
+            .then(response => {
+                this.setState({
+                    pets: response.data
+                });
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
 
     render() {
-        const { pets, currentPet, currentIndex, searchName, searchGender,searchPetType } = this.state;
+        const { pets, currentPet, currentIndex, searchName, searchGender, searchCategory } = this.state;
 
-        console.log("currentPet:"+currentPet)
-        console.log("searchName:"+searchName);
-        console.log("searchGender:"+searchGender);
-        console.log("pets:"+pets)
+        console.log(currentPet)
+        console.log(pets)
 
         return (
             <div className="list row">
@@ -185,31 +157,34 @@ export default class PetsList extends Component {
                             value={searchName}
                             onChange={this.onChangeSearchName}
                         />
-                         {/*<div className="form-group">*/}
-                         {/*    <label htmlFor="gender">Gender</label>*/}
+                    {/* </div> */}
+                         {/* <div className="form-group"> */}
+                            {/* <label htmlFor="gender">Gender</label> */}
                             <select
                                 name="gender"
                                 id="gender"
-                                // required
+                                required
                                 value={searchGender}
                                 onChange={this.onChangeSearchGender}
                             >
-                                <option defaultValue={"Gender"}>Gender</option>
+                                <option value="" selected>Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
+                         {/* </div> */}
+                         {/* <div className="form-group"> */}
                             <select
-                                name="type"
-                                id="type"
+                                name="category"
+                                id="category"
                                 required
-                                value={searchPetType}
-                                onChange={this.onChangeSearchPetType}
+                                value={searchCategory}
+                                onChange={this.onChangeSearchCategory}
                             >
-                                <option defaultValue={"Pet Type"}>Pet Type</option>
+                                <option value="" selected>Category</option>
                                 <option value="Cat">Cat</option>
                                 <option value="Dog">Dog</option>
                             </select>
-                         {/*</div>*/}
+                        {/* </div> */}
                         <div className="input-group-append">
                             <button
                                 className="btn btn-outline-secondary"

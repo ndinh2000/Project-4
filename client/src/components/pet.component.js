@@ -8,6 +8,7 @@ export default class Pet extends Component {
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeAge = this.onChangeAge.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
+        this.onChangeCategory = this.onChangeCategory.bind(this);
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
@@ -24,6 +25,7 @@ export default class Pet extends Component {
                 name: "",
                 age: 0,
                 gender: "",
+                category: "",
                 price: 0.0,
                 message: "",
                 profile_picture: "",
@@ -70,6 +72,17 @@ export default class Pet extends Component {
             currentPet: {
                 ...prevState.currentPet,
                 gender: gender
+            }
+        }));
+    }
+
+    onChangeCategory(e) {
+        const category = e.target.value;
+
+        this.setState(prevState => ({
+            currentPet: {
+                ...prevState.currentPet,
+                category: category
             }
         }));
     }
@@ -140,6 +153,7 @@ export default class Pet extends Component {
             name: this.state.currentPet.name,
             age: this.state.currentPet.age,
             gender: this.state.currentPet.gender,
+            category: this.state.currentPet.category,
             price:this.state.currentPet.price,
             message: this.state.currentPet.message,
             profile_picture: this.state.currentPet.profile_picture,
@@ -232,6 +246,19 @@ export default class Pet extends Component {
                                 >
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="category">Category</label>
+                                <select
+                                    name="category"
+                                    id="category"
+                                    value={currentPet.category}
+                                    onChange={this.onChangeCategory}
+                                >
+                                    <option value="Cat">Cat</option>
+                                    <option value="Dog">Dog</option>
                                 </select>
                             </div>
 

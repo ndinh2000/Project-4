@@ -12,6 +12,7 @@ class PetDataService {
     }
 
     create(data) {
+        //Issue with Post
         return http.post("/pets", data);
     }
 
@@ -27,23 +28,21 @@ class PetDataService {
         return http.delete(`/pets`);
     }
 
-    findByName(name) {
-        return http.get(`/pets?name=${name}`);
+    // findByName(name) {
+    //     return http.get(`/pets?name=${name}`);
+    // }
+
+    findByName(pet) {
+        return http.get(`/pets?name=${pet.name}&gender=${pet.gender}&category=${pet.category}`);
     }
 
-    findByGender(gender) {
-        return http.get(`/pets?gender=${gender}`);
-    }
+    // findByName(pet) {
+    //     return http.get(`/pets?name=${pet.name}&gender=${pet.gender}`);
+    // }
 
-    findByPetType(pet_type)
-    {
-        return http.get(`/pets?pet_type=${pet_type}`);
-    }
-
-    findByAll(name,gender,pet_type)
-    {
-        return http.get(`/pets?name=${name}&gender=${gender}&pet_type=${pet_type}`);
-    }
+    // findByGender(gender) {
+    //     return http.get(`/pets?gender=${gender}`);
+    // }
 }
 
 export default new PetDataService();

@@ -86,6 +86,10 @@ input[type=tel]{
     width: 80%;
 }
 
+label {
+    margin-right: 10px;
+}
+
 
 #shipping-method{
     width: 80%;

@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         gender: {
             type: Sequelize.STRING
         },
+        category: {
+            type: Sequelize.STRING
+        },
         price: {
             type: Sequelize.FLOAT
         },
