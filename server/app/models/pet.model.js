@@ -28,9 +28,6 @@ module.exports = (sequelize, Sequelize) => {
         published: {
             type: Sequelize.BOOLEAN
         },
-        pet_type: {
-            type: Sequelize.STRING
-        }
     });
 
     return Pet;

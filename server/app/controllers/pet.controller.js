@@ -18,6 +18,7 @@ exports.create = (req, res) => {
         name:req.body.name,
         age:req.body.age,
         gender:req.body.gender,
+        category:req.body.category,
         price:req.body.price,
         message:req.body.message,
         profile_picture:req.body.profile_picture,

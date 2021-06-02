@@ -12,7 +12,6 @@ export default class Pet extends Component {
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeMessage = this.onChangeMessage.bind(this);
         this.onChangeProfilePicture= this.onChangeProfilePicture.bind(this);
-        this.onChangePetType= this.onChangePetType.bind(this);
 
         this.getPet = this.getPet.bind(this);
         this.updatePublished = this.updatePublished.bind(this);
@@ -30,7 +29,6 @@ export default class Pet extends Component {
                 message: "",
                 profile_picture: "",
                 published: false,
-                pet_type:"",
             },
             message: ""
         };
@@ -120,17 +118,6 @@ export default class Pet extends Component {
         }));
     }
 
-    onChangePetType(e) {
-        const pet_type = e.target.value;
-
-        this.setState(prevState => ({
-            currentPet: {
-                ...prevState.currentPet,
-                pet_type: pet_type
-            }
-        }));
-    }
-
     getPet(pet_id) {
         console.log(`gettPet(${pet_id})`)
         console.log(pet_id)
@@ -157,39 +144,57 @@ export default class Pet extends Component {
             price:this.state.currentPet.price,
             message: this.state.currentPet.message,
             profile_picture: this.state.currentPet.profile_picture,
-            pet_type:this.state.currentPet.pet_type,
             published: status
         };
 
-        PetDataService.update(this.state.currentPet.pet_id, data)
-            .then(response => {
-                this.setState(prevState => ({
-                    currentPet: {
-                        ...prevState.currentPet,
-                        published: status
-                    }
-                }));
-                console.log(response.data);
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        if(data.age < 0)
+        {
+            alert("Age cannot be negative.")
+        }
+        else if(data.price < 0)
+        {
+            alert("Price cannot be negative.")
+        }
+        else {
+            PetDataService.update(this.state.currentPet.pet_id, data)
+                .then(response => {
+                    this.setState(prevState => ({
+                        currentPet: {
+                            ...prevState.currentPet,
+                            published: status
+                        }
+                    }));
+                    console.log(response.data);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
     }
 
     updatePet() {
-        PetDataService.update(
-            this.state.currentPet.pet_id,
-            this.state.currentPet
-        )
-            .then(response => {
-                console.log(response.data);
-                this.setState({
-                    message: "The pet was updated successfully!"
+        if(this.state.currentPet.age < 0)
+        {
+            alert("Age cannot be negative.")
+        }
+        else if(this.state.currentPet.price < 0)
+        {
+            alert("Price cannot be negative.")
+        }else {
+            PetDataService.update(
+                this.state.currentPet.pet_id,
+                this.state.currentPet
+            )
+                .then(response => {
+                    console.log(response.data);
+                    this.setState({
+                        message: "The pet was updated successfully!"
+                    });
+                })
+                .catch(e => {
+                    console.log(e);
                 });
-            })
-            .catch(e => {
-                console.log(e);
-            });
+        }
     }
 
     deletePet() {
@@ -210,7 +215,7 @@ export default class Pet extends Component {
             <div>
                 {currentPet ? (
                     <div className="edit-form">
-                        <h4>Pet</h4>
+                        <h4>Pet {currentPet.pet_id}</h4>
                         <form>
                             <div className="form-group">
                                 <label htmlFor="name">Pet Name</label>
@@ -230,6 +235,7 @@ export default class Pet extends Component {
                                     type="number"
                                     className="form-control"
                                     id="age"
+                                    min={0}
                                     value={currentPet.age}
                                     onChange={this.onChangeAge}
                                     name="age"
@@ -250,17 +256,20 @@ export default class Pet extends Component {
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="category">Category</label>
-                                <select
-                                    name="category"
-                                    id="category"
-                                    value={currentPet.category}
-                                    onChange={this.onChangeCategory}
-                                >
-                                    <option value="Cat">Cat</option>
-                                    <option value="Dog">Dog</option>
-                                </select>
+                                <label htmlFor="category">Category: {currentPet.category}</label>
                             </div>
+                            {/*<div className="form-group">*/}
+                            {/*    <label htmlFor="category">Category</label>*/}
+                            {/*    <select*/}
+                            {/*        name="category"*/}
+                            {/*        id="category"*/}
+                            {/*        value={currentPet.category}*/}
+                            {/*        onChange={this.onChangeCategory}*/}
+                            {/*    >*/}
+                            {/*        <option value="Cat">Cat</option>*/}
+                            {/*        <option value="Dog">Dog</option>*/}
+                            {/*    </select>*/}
+                            {/*</div>*/}
 
                             <div className="form-group">
                                 <label htmlFor="price">Price</label>
@@ -269,6 +278,7 @@ export default class Pet extends Component {
                                     step= "0.01"
                                     className="form-control"
                                     id="price"
+                                    min={0}
                                     value={currentPet.price}
                                     onChange={this.onChangePrice}
                                     name="price"
@@ -296,18 +306,6 @@ export default class Pet extends Component {
                                     value={currentPet.profile_picture}
                                     onChange={this.onChangeProfilePicture}
                                     name="profile_picture"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="pet_type">Pet Type</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="pet_type"
-                                    value={currentPet.pet_type}
-                                    onChange={this.onChangePetType}
-                                    name="pet_type"
                                 />
                             </div>
 

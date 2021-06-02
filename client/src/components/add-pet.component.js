@@ -20,8 +20,8 @@ export default class AddPet extends Component {
             pet_id: "",
             name: "",
             age: 0,
-            gender: "",
-            category: "",
+            gender: "Male",
+            category: "Cat",
             price: 0.0,
             message: "",
             profile_picture: "",
@@ -91,27 +91,49 @@ export default class AddPet extends Component {
             profile_picture: this.state.profile_picture,
         };
 
-        PetDataService.create(data)
-            .then(response => {
-                this.setState({
-                    pet_id: response.data.pet_id,
-                    name: response.data.name,
-                    age: response.data.age,
-                    gender: response.data.gender,
-                    category: response.data.category,
-                    price: response.data.price,
-                    message: response.data.message,
-                    profile_picture: response.data.profile_picture,
-                    published: response.data.published,
+        let idName = ["C","D"]
+        if(idName.indexOf(data.pet_id.substring(0,1)) === -1 || !(/^\d+$/.test(data.pet_id.substring(1,data.pet_id.length))))
+        {
+            alert("Invalid pet id. If its a cat, follow this format: C(pet_id). For example: C101")
+        }
+        else if(idName.indexOf(data.pet_id.substring(0,1)) !== -1 && /^\d+$/.test(data.pet_id.substring(1,data.pet_id.length))
+                && ((data.pet_id.startsWith("C",0) && data.category === "Dog") || (data.pet_id.startsWith("D",0) && data.category === "Cat")))
+        {
+            //valid pet id name
+            alert("Pet id and category does not match.")
+        }
+        else if(data.age < 0)
+        {
+            alert("Age cannot be negative.")
+        }
+        else if(data.price < 0)
+        {
+            alert("Price cannot be negative.")
+        }
+        else {
+            PetDataService.create(data)
+                .then(response => {
+                    this.setState({
+                        pet_id: response.data.pet_id,
+                        name: response.data.name,
+                        age: response.data.age,
+                        gender: response.data.gender,
+                        category: response.data.category,
+                        price: response.data.price,
+                        message: response.data.message,
+                        profile_picture: response.data.profile_picture,
+                        published: response.data.published,
 
-                    submitted: true
+                        submitted: true
+                    });
+                    console.log(response.data);
+                })
+                .catch(e => {
+                    //NOTE: This is throwing error
+                    console.log(e);
+                    alert("Pet id exists.")
                 });
-                console.log(response.data);
-            })
-            .catch(e => {
-                //NOTE: This is throwing error
-                console.log(e);
-            });
+        }
     }
 
     newPet() {
@@ -142,11 +164,12 @@ export default class AddPet extends Component {
                     </div>
                 ) : (
                     <div>
-                        {/* <div className="form-group"> */}
-                        <form onSubmit={this.savePet} className="form-group">
+                        <div className="form-group">
+                        {/*<form onSubmit={this.savePet} className="form-group">*/}
                             <label htmlFor="pet_id">Pet ID</label>
                             <input
                                 type="text"
+                                placeholder={"ex: C101, D101"}
                                 className="form-control"
                                 id="pet_id"
                                 required
@@ -154,11 +177,6 @@ export default class AddPet extends Component {
                                 onChange={this.onChangePetID}
                                 name="pet_id"
                             />
-                        {/* </div> */}
-
-                        {/* <div className="form-group"> */}
-
-                            {/* <br/> */}
                             <label htmlFor="name">Pet Name</label>
                             <input
                                 type="text"
@@ -176,6 +194,7 @@ export default class AddPet extends Component {
                                 type="number"
                                 className="form-control"
                                 id="age"
+                                min={0}
                                 required
                                 value={this.state.age}
                                 onChange={this.onChangeAge}
@@ -219,6 +238,7 @@ export default class AddPet extends Component {
                                 step= "0.01"
                                 className="form-control"
                                 id="price"
+                                min={0}
                                 required
                                 value={this.state.price}
                                 onChange={this.onChangePrice}
@@ -227,15 +247,6 @@ export default class AddPet extends Component {
 
                             {/* <br/> */}
                             <label htmlFor="Message">Message</label>
-                            {/* <input
-                                type="text"
-                                className="form-control"
-                                id="message"
-                                required
-                                value={this.state.message}
-                                onChange={this.onChangeMessage}
-                                name="message"
-                            /> */}
                             <textarea
                                 // type="text"
                                 className="form-control"
@@ -258,103 +269,15 @@ export default class AddPet extends Component {
                                 onChange={this.onChangeProfilePicture}
                                 name="profile_picture"
                             />
-                            {/* <button onClick={this.savePet} className="btn btn-success"> */}
-
                             <br/>
-                            <button type="submit" className="btn btn-success">
-                                Submit
-                            </button>
-                        </form>
-                        {/* </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="age">Age</label>
-                            <input
-                                type="number"
-                                className="form-control"
-                                id="age"
-                                required
-                                value={this.state.age}
-                                onChange={this.onChangeAge}
-                                name="age"
-                            />
-                        </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="gender">Gender</label>
-                            <select
-
-                                id="gender"
-                                required
-                                value={this.state.gender}
-                                onChange={this.onChangeGender}
-                                name="gender"
-
-                            >
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="category">Category</label>
-                            <select
-
-                                id="category"
-                                required
-                                value={this.state.category}
-                                onChange={this.onChangeCategory}
-                                name="category"
-
-                            >
-                                <option value="Cat">Cat</option>
-                                <option value="Dog">Dog</option>
-                            </select>
-                        </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="price">Price</label>
-                            <input
-                                type="number"
-                                step= "0.01"
-                                className="form-control"
-                                id="price"
-                                required
-                                value={this.state.price}
-                                onChange={this.onChangePrice}
-                                name="price"
-                            />
-                        </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="Message">Message</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="message"
-                                required
-                                value={this.state.message}
-                                onChange={this.onChangeMessage}
-                                name="message"
-                            />
-                        </div> */}
-
-                        {/* <div className="form-group">
-                            <label htmlFor="profile_picture">Profile Picture</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="profile_picture"
-                                required
-                                value={this.state.profile_picture}
-                                onChange={this.onChangeProfilePicture}
-                                name="profile_picture"
-                            />
-                        </div> */}
-
-                        {/* <button onClick={this.savePet} className="btn btn-success">
+                            {/*<button type="submit" className="btn btn-success">*/}
+                            {/*    Submit*/}
+                            {/*</button>*/}
+                        </div>
+                        {/*</form>*/}
+                        <button  onClick={this.savePet} className="btn btn-success">
                             Submit
-                        </button> */}
+                        </button>
                     </div>
                 )}
             </div>
