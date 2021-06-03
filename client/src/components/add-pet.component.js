@@ -265,7 +265,7 @@ export default class AddPet extends Component {
                                 value={this.state.message}
                                 onChange={this.onChangeMessage}
                                 name="message"
-                                style={{height: "100px", overflow: "auto"}}
+                                style={{height: "100px", overflow: "auto", width: "80%"}}
                             />
 
                             {/* <br/> */}

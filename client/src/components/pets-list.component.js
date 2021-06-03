@@ -149,13 +149,14 @@ export default class PetsList extends Component {
         return (
             <div className="list row">
                 <div className="col-md-8">
-                    <div className="input-group mb-3">
+                    <div className="input-group mb-3" style={{width: "600px"}}>
                         <input
                             type="text"
                             className="form-control"
                             placeholder="Search by Name"
                             value={searchName}
                             onChange={this.onChangeSearchName}
+                            // style={{width: "120px"}}
                         />
                     {/* </div> */}
                          {/* <div className="form-group"> */}
@@ -164,6 +165,7 @@ export default class PetsList extends Component {
                                 name="gender"
                                 id="gender"
                                 required
+                                className="form-control"
                                 value={searchGender}
                                 onChange={this.onChangeSearchGender}
                             >
@@ -177,6 +179,7 @@ export default class PetsList extends Component {
                                 name="category"
                                 id="category"
                                 required
+                                className="form-control"
                                 value={searchCategory}
                                 onChange={this.onChangeSearchCategory}
                             >

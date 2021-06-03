@@ -266,8 +266,10 @@ export default class Pet extends Component {
                                 <select
                                     name="gender"
                                     id="gender"
+                                    className="form-control"
                                     value={currentPet.gender}
                                     onChange={this.onChangeGender}
+                                    style={{width: "80%"}}
                                 >
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -306,13 +308,13 @@ export default class Pet extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="Message">Message</label>
-                                <input
-                                    type="text"
+                                <textarea
                                     className="form-control"
                                     id="message"
                                     value={currentPet.message}
                                     onChange={this.onChangeMessage}
                                     name="message"
+                                    style={{height: "100px", overflow: "auto", width: "80%"}}
                                 />
                             </div>
 
