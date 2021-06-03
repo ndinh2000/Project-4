@@ -100,7 +100,7 @@ export default class AddPet extends Component {
                 && ((data.pet_id.startsWith("C",0) && data.category === "Dog") || (data.pet_id.startsWith("D",0) && data.category === "Cat")))
         {
             //valid pet id name
-            alert("Pet id and category does not match.")
+            alert("Pet id and category does not match. If Category is Cat, Pet ID should start with C follow by id number. Example: Category: Cat, Pet ID: C101.")
         }
         else if(data.age < 0)
         {
@@ -109,6 +109,15 @@ export default class AddPet extends Component {
         else if(data.price < 0)
         {
             alert("Price cannot be negative.")
+        }
+        else if(data.pet_id.length===0 || data.name.length ===0 || data.age.toString().length ===0 || data.price.toString().length === 0 || data.profile_picture.length===0
+                || /^\s+$/.test(data.name) || /^\s+$/.test(data.message) || data.message.length === 0)
+        {
+            alert("Fields cannot be empty!")
+        }
+        else if(!(/\.(jpeg|jpg|gif|png)$/.test(data.profile_picture)))
+        {
+            alert("Invalid profile picture path. Should be either jpeg, jpg, gif, png.")
         }
         else {
             PetDataService.create(data)
@@ -132,6 +141,7 @@ export default class AddPet extends Component {
                     //NOTE: This is throwing error
                     console.log(e);
                     alert("Pet id exists.")
+
                 });
         }
     }

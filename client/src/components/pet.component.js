@@ -155,6 +155,15 @@ export default class Pet extends Component {
         {
             alert("Price cannot be negative.")
         }
+        else if(data.name.length === 0 || data.age.toString().length ===0 || data.price.toString().length === 0 || data.profile_picture.length===0
+            || /^\s+$/.test(data.name) || /^\s+$/.test(data.message) || data.message.length === 0)
+        {
+            alert("Fields cannot be empty!")
+        }
+        else if(!(/\.(jpeg|jpg|gif|png)$/.test(data.profile_picture)))
+        {
+            alert("Invalid profile picture path. Should be either jpeg, jpg, gif, png.")
+        }
         else {
             PetDataService.update(this.state.currentPet.pet_id, data)
                 .then(response => {
@@ -180,7 +189,17 @@ export default class Pet extends Component {
         else if(this.state.currentPet.price < 0)
         {
             alert("Price cannot be negative.")
-        }else {
+        }
+        else if( this.state.name === undefined || this.state.name.length ===0 || this.state.age.toString().length ===0 || this.state.price.toString().length === 0 || this.state.profile_picture.length===0
+            || /^\s+$/.test(this.state.name) || /^\s+$/.test(this.state.message) || this.state.message.length === 0)
+        {
+            alert("Fields cannot be empty!")
+        }
+        else if(!(/\.(jpeg|jpg|gif|png)$/.test(this.state.currentPet.profile_picture)))
+        {
+            alert("Invalid profile picture path. Should be either jpeg, jpg, gif, png.")
+        }
+        else {
             PetDataService.update(
                 this.state.currentPet.pet_id,
                 this.state.currentPet
